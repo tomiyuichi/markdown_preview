@@ -12,10 +12,10 @@ interface MarkdownPreviewProps {
 }
 
 export default function MarkdownPreview({ markdown, theme }: MarkdownPreviewProps) {
-  const [themeStyle, setThemeStyle] = useState(themes.github)
+  const [themeStyle, setThemeStyle] = useState(themes.tomorrow)
 
   useEffect(() => {
-    setThemeStyle(themes[theme] || themes.github)
+    setThemeStyle(themes[theme] || themes.tomorrow)
   }, [theme])
 
   return (

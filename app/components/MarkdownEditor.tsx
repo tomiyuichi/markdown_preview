@@ -1,4 +1,4 @@
-import { Textarea } from "@/components/ui/textarea"
+import { Textarea } from "./ui/textarea"
 
 interface MarkdownEditorProps {
   markdown: string
