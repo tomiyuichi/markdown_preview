@@ -27,7 +27,11 @@ export default function MarkdownPreview({ markdown, theme }: MarkdownPreviewProp
             const language = match ? match[1] : ''
             
             if (language === 'mermaid') {
-              return <Mermaid chart={String(children).replace(/\n$/, '')} />
+              return (
+                <div className="my-4 p-4 bg-white rounded-lg shadow-md">
+                  <Mermaid chart={String(children).replace(/\n$/, '')} />
+                </div>
+              )
             }
 
             if (language === 'plantuml') {
@@ -36,6 +40,7 @@ export default function MarkdownPreview({ markdown, theme }: MarkdownPreviewProp
                 <img
                   src={`https://www.plantuml.com/plantuml/png/${encodedUml}`}
                   alt="PlantUML diagram"
+                  className="my-4 bg-white p-4 rounded-lg shadow-md"
                 />
               )
             }

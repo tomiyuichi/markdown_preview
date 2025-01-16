@@ -14,5 +14,8 @@
   .markdown-preview code {
     @apply text-sm;
   }
-}
 
+  .mermaid {
+    @apply bg-white p-4 rounded-lg shadow-md;
+  }
+}
