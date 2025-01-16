@@ -2,6 +2,7 @@ import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { useState, useEffect } from 'react'
 import Mermaid from './Mermaid'
+import pako from 'pako'
 
 // Import all themes
 import * as themes from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -11,9 +12,16 @@ interface MarkdownPreviewProps {
   theme: string
 }
 
-// Custom encoding function to handle Unicode characters
-function customEncode(str: string) {
-  return encodeURIComponent(str).replace(/%/g, '')
+// Custom encoding function for PlantUML
+function encodePlantUML(text: string): string {
+  // Compress using DEFLATE
+  const compressed = pako.deflate(text, { level: 9 })
+  
+  // Convert to base64
+  const base64 = btoa(String.fromCharCode.apply(null, compressed as unknown as number[]))
+  
+  // Make URL safe
+  return base64.replace(/\+/g, '-').replace(/\//g, '_')
 }
 
 export default function MarkdownPreview({ markdown, theme }: MarkdownPreviewProps) {
@@ -40,10 +48,10 @@ export default function MarkdownPreview({ markdown, theme }: MarkdownPreviewProp
             }
 
             if (language === 'plantuml') {
-              const encodedUml = customEncode(String(children).replace(/\n$/, ''))
+              const encodedUml = encodePlantUML(String(children).replace(/\n$/, ''))
               return (
                 <img
-                  src={`https://www.plantuml.com/plantuml/png/~1${encodedUml}`}
+                  src={`https://www.plantuml.com/plantuml/png/${encodedUml}`}
                   alt="PlantUML diagram"
                   className="my-4 bg-white p-4 rounded-lg shadow-md"
                 />
@@ -72,4 +80,3 @@ export default function MarkdownPreview({ markdown, theme }: MarkdownPreviewProp
     </div>
   )
 }
-
