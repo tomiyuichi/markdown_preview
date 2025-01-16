@@ -11,6 +11,11 @@ interface MarkdownPreviewProps {
   theme: string
 }
 
+// Custom encoding function to handle Unicode characters
+function customEncode(str: string) {
+  return encodeURIComponent(str).replace(/%/g, '')
+}
+
 export default function MarkdownPreview({ markdown, theme }: MarkdownPreviewProps) {
   const [themeStyle, setThemeStyle] = useState(themes.tomorrow)
 
@@ -35,10 +40,10 @@ export default function MarkdownPreview({ markdown, theme }: MarkdownPreviewProp
             }
 
             if (language === 'plantuml') {
-              const encodedUml = btoa(String(children).replace(/\n$/, ''))
+              const encodedUml = customEncode(String(children).replace(/\n$/, ''))
               return (
                 <img
-                  src={`https://www.plantuml.com/plantuml/png/${encodedUml}`}
+                  src={`https://www.plantuml.com/plantuml/png/~1${encodedUml}`}
                   alt="PlantUML diagram"
                   className="my-4 bg-white p-4 rounded-lg shadow-md"
                 />
